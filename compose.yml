@@ -1,0 +1,24 @@
+services:
+  mediawiki:
+    image: mediawiki
+    container_name: mediawiki
+    restart: always
+    ports:
+      - 8080:80
+    networks:
+      - db-con
+      - reverse-proxy
+    volumes:
+      - mediawiki-images:/var/www/html/images
+      - ./LocalSettings.php:/var/www/html/LocalSettings.php
+      - ./secrets.php:/var/www/html/secrets.php
+      - ./logo.svg:/var/www/html/resources/assets/logo.svg
+
+volumes:
+  mediawiki-images:
+
+networks:
+  db-con:
+    external: true
+  reverse-proxy:
+    external: true
