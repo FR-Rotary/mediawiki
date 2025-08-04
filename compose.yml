@@ -3,8 +3,6 @@ services:
     image: mediawiki
     container_name: mediawiki
     restart: always
-    ports:
-      - 8080:80
     networks:
       - db-con
       - reverse-proxy
@@ -13,6 +11,12 @@ services:
       - ./LocalSettings.php:/var/www/html/LocalSettings.php
       - ./secrets.php:/var/www/html/secrets.php
       - ./logo.svg:/var/www/html/resources/assets/logo.svg
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mediawiki.rule=Host(`wiki.rotarypub.se`)"
+      - "traefik.http.routers.mediawiki.entrypoints=websecure"
+      - "traefik.http.routers.mediawiki.middlewares=auth@file"
+      
 
 volumes:
   mediawiki-images:
